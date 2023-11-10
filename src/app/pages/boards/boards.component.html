@@ -14,7 +14,7 @@
     </ul>
     <cdk-accordion>
       <cdk-accordion-item #accordionMenu="cdkAccordionItem">
-        <button class="w-full py-1 px-2 flex justify-between items-center" type="button"
+        <button class="w-full py-1 px-2 flex justify-between items-center mb-5" type="button"
           (click)="accordionMenu.toggle()">
           My Workspace
           <fa-icon [icon]="accordionMenu.expanded ? faAngleUp : faAngleDown"></fa-icon>
@@ -42,6 +42,24 @@
           </ul>
         </div>
       </cdk-accordion-item>
+    </cdk-accordion>
+    <cdk-accordion>
+      @for (item of items; track item.label) {
+      <cdk-accordion-item #accordionItem="cdkAccordionItem">
+        <button type="button" class="w-full py-1 px-2 flex justify-between items-center"
+          (click)="accordionItem.toggle()">
+          {{ item.label }}
+          <fa-icon [icon]="accordionItem.expanded ? faAngleUp : faAngleDown"></fa-icon>
+        </button>
+        <div [style.display]="accordionItem.expanded ? '' : 'none'">
+          <ul>
+            @for (subItem of item.items; track subItem.label) {
+            <li>{{ subItem.label }}</li>
+            }
+          </ul>
+        </div>
+      </cdk-accordion-item>
+      }
     </cdk-accordion>
   </div>
   <div class="w-full">
