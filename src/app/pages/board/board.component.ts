@@ -5,6 +5,8 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 import { Column, ToDo } from '../../models/todo.model';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { TodoDialogComponent } from '../../components/todo-dialog/todo-dialog.component';
+import { DestroyComponent } from '../../components/destroy/destroy.component';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -18,7 +20,7 @@ import { TodoDialogComponent } from '../../components/todo-dialog/todo-dialog.co
     DialogModule,
   ]
 })
-export class BoardComponent {
+export class BoardComponent extends DestroyComponent {
 
 
   columns: Column[] = [
@@ -69,7 +71,7 @@ export class BoardComponent {
 
   constructor(
     private dialog: Dialog
-  ) { }
+  ) { super() }
 
   drop(event: CdkDragDrop<ToDo[]>) {
     if (event.previousContainer === event.container) {
@@ -99,8 +101,10 @@ export class BoardComponent {
         todo
       }
     })
-    dialogRef.closed.subscribe(output => {
-      console.log(output);
-    })
+    dialogRef.closed
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(output => {
+        console.log(output);
+      })
   }
 }
