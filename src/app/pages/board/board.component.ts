@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ToDo } from '../../models/todo.model';
+import { Column, ToDo } from '../../models/todo.model';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { TodoDialogComponent } from '../../components/todo-dialog/todo-dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -12,47 +14,62 @@ import { ToDo } from '../../models/todo.model';
   imports: [
     CommonModule,
     NavbarComponent,
-    DragDropModule
+    DragDropModule,
+    DialogModule,
   ]
 })
 export class BoardComponent {
 
-  toDoTasks: ToDo[] = [
-    {
-      id: '1',
-      title: 'Create notifications'
-    },
-    {
-      id: '2',
-      title: 'Create overlay'
-    },
-    {
-      id: '3',
-      title: 'Implement user CRUD'
-    },
-  ]
 
-  doingTasks: ToDo[] = [
+  columns: Column[] = [
     {
-      id: '1',
-      title: 'Add Guard to rutes'
+      title: 'To Do',
+      todos: [
+        {
+          id: '1',
+          title: 'Create notifications'
+        },
+        {
+          id: '2',
+          title: 'Create overlay'
+        },
+        {
+          id: '3',
+          title: 'Implement user CRUD'
+        },
+      ]
     },
     {
-      id: '2',
-      title: 'Download attachments'
+      title: 'Doing',
+      todos: [
+        {
+          id: '1',
+          title: 'Add Guard to rutes'
+        },
+        {
+          id: '2',
+          title: 'Download attachments'
+        },
+        {
+          id: '3',
+          title: 'Take a photo'
+        },
+      ]
     },
     {
-      id: '3',
-      title: 'Take a photo'
-    },
-  ]
-
-  doneTasks: ToDo[] = [
-    {
-      id: '1',
-      title: 'Play video'
+      title: 'Done',
+      todos: [
+        {
+          id: '1',
+          title: 'Play video'
+        }
+      ]
     }
   ]
+
+  constructor(
+    private dialog: Dialog
+  ) { }
 
   drop(event: CdkDragDrop<ToDo[]>) {
     if (event.previousContainer === event.container) {
@@ -65,5 +82,25 @@ export class BoardComponent {
         event.currentIndex
       )
     }
+  }
+
+  addColumn() {
+    this.columns.push({
+      title: 'New Column',
+      todos: []
+    })
+  }
+
+  openDialog(todo: ToDo) {
+    const dialogRef = this.dialog.open(TodoDialogComponent, {
+      minWidth: '300px',
+      maxWidth: '50%',
+      data: {
+        todo
+      }
+    })
+    dialogRef.closed.subscribe(output => {
+      console.log(output);
+    })
   }
 }
