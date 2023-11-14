@@ -6,14 +6,17 @@
       </a>
       <div class="flex items-center">
         <ul class="flex items-center space-x-2 text-sm font-medium">
-          <li>
-            <a class="block py-3 px-4 text-white">Workspaces</a>
+          <li class="py-2">
+            <app-btn class="py-3" typeBtn="button" color="sky" routerLink="/boards">Boards</app-btn>
           </li>
           <li>
-            <a class="block py-3 px-4 text-white">Recent</a>
+            <app-btn typeBtn="button" color="sky" routerLink="/board" routerLinkActive="activebutton">Board</app-btn>
           </li>
           <li>
-            <app-btn typeBtn="button" color="sky">Create</app-btn>
+            <app-btn typeBtn="button" color="sky" routerLink="/scroll" routerLinkActive="activebutton">Scroll</app-btn>
+          </li>
+          <li>
+            <app-btn typeBtn="button" color="sky" routerLink="/table" routerLinkActive="activebutton">Table</app-btn>
           </li>
         </ul>
       </div>
@@ -27,15 +30,16 @@
           <fa-icon [icon]="faInfoCircle"></fa-icon>
         </button>
         <button type="button" class="flex rounded-full" aria-expanded="false" type="button" (click)="isOpen =!isOpen"
-        cdkOverlayOrigin #menuOverlay="cdkOverlayOrigin">
-        <img class="w-8 h-8 rounded-full" src="https://api.lorem.space/image/face?w=400&h=400" alt="user photo" />
-      </button>
+          cdkOverlayOrigin #menuOverlay="cdkOverlayOrigin">
+          <img class="w-8 h-8 rounded-full" src="https://api.lorem.space/image/face?w=400&h=400" alt="user photo" />
+        </button>
       </div>
     </div>
   </div>
 </nav>
 
-<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="menuOverlay" [cdkConnectedOverlayOpen]="isOpen">
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="menuOverlay" [cdkConnectedOverlayOpen]="isOpen"
+  (overlayOutsideClick)="isOpen = !isOpen">
   <div class="z-50 my-4 w-60 text-base list-none bg-white rounded divide-y divide-gray-100 shadow">
     <div class="py-3 px-4 flex justify-between">
       <span class="block text-sm text-center text-gray-900">Account</span>
@@ -70,7 +74,7 @@
     </ul>
     <ul class="py-1">
       <li>
-        <a href="#" class="block py-2 px-4 text-sm text-gray-700">Log out</a>
+        <a routerLink="/login" class="block py-2 px-4 text-sm text-gray-700">Log out</a>
       </li>
     </ul>
   </div>

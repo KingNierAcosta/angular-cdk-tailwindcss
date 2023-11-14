@@ -12,7 +12,7 @@ export class DataSourceProduct extends DataSource<Product> {
   }
 
   override disconnect(collectionViewer: CollectionViewer): void {
-    throw new Error('Method not implemented.');
+    this.data.complete();
   }
 
   init(products: Product[]) {
@@ -39,7 +39,10 @@ export class DataSourceProduct extends DataSource<Product> {
   }
 
   find(query: string) {
-    const newProducts = this.originalData.filter(it => it.title.toLowerCase().includes(query.toLowerCase()));
+    const newProducts = this.originalData.filter(it => {
+      const word = `${it.id}-${it.title}-${it.price}`;
+      return word.toLowerCase().includes(query.toLowerCase())
+    });
     this.data.next(newProducts);
   }
 

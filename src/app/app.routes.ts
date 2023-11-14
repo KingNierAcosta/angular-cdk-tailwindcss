@@ -25,5 +25,8 @@ export const routes: Routes = [
   {
     path: 'table',
     component: TableComponent
+  },
+  {
+    path: '', redirectTo: 'boards', pathMatch: 'full'
   }
 ];
